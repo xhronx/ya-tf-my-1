@@ -4,7 +4,8 @@ resource "null_resource" "docker-swarm-manager" {
   connection {
     user        = var.ssh_credentials.user
     private_key = file(var.ssh_credentials.private_key)
-    host        = yandex_compute_instance.vm-manager[count.index].network_interface.0.nat_ip_address
+    #host        = yandex_compute_instance.vm-manager[count.index].network_interface.0.nat_ip_address
+    host        = yandex_compute_instance.vm-manager[0].network_interface.0.nat_ip_address
   }
 
   provisioner "file" {
@@ -45,9 +46,11 @@ resource "null_resource" "docker-swarm-manager-token" {
     destination = "/home/ubuntu/join.sh"
   }
     provisioner "remote-exec" {
-      inline = [
-        "chmod +x ~/join.sh",
-        "~/join.sh"
+    inline = [
+      "curl -fsSL https://get.docker.com | sh",
+      "sudo usermod -aG docker $USER",
+      "chmod +x ~/join.sh",
+      "~/join.sh"
     ]
   }
 }
@@ -65,11 +68,11 @@ resource "null_resource" "docker-swarm-worker-join" {
     destination = "/home/ubuntu/join.sh"
   }
     provisioner "remote-exec" {
-      inline = [
-        "curl -fsSL https://get.docker.com | sh",
-        "sudo usermod -aG docker $USER",
-        "chmod +x ~/join.sh",
-        "~/join.sh"
+    inline = [
+      "curl -fsSL https://get.docker.com | sh",
+      "sudo usermod -aG docker $USER",
+      "chmod +x ~/join.sh",
+      "~/join.sh"
     ]
   }
 }
