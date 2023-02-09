@@ -42,7 +42,7 @@ resource "null_resource" "docker-swarm-manager-token" {
   }
   provisioner "file" {
     source      = "join_m.sh"
-    destination = "~/join.sh"
+    destination = "/home/ubuntu/join.sh"
   }
   #provisioner "remote-exec" {
   #  inline = [
@@ -62,7 +62,7 @@ resource "null_resource" "docker-swarm-worker-join" {
   }
     provisioner "file" {
     source      = "join_w.sh"
-    destination = "~/join.sh"
+    destination = "/home/ubuntu/join.sh"
   }
   provisioner "remote-exec" {
   inline = [
