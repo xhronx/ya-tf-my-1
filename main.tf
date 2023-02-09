@@ -42,6 +42,6 @@ resource "yandex_vpc_subnet" "subnet" {
 module "swarm_cluster" {
   source        = "./modules/cluster"
   vpc_subnet_id = yandex_vpc_subnet.subnet.id
-  managers      = 1
-  workers       = 2
+  managers      = 2
+  workers       = 3
 }

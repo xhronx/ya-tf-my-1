@@ -44,12 +44,12 @@ resource "null_resource" "docker-swarm-manager-token" {
     source      = "join_m.sh"
     destination = "/home/ubuntu/join.sh"
   }
-  #provisioner "remote-exec" {
-  #  inline = [
-  #    "chmod +x ~/join.sh",
-  #    "~/join.sh"
-  #  ]
-  #}
+    provisioner "remote-exec" {
+      inline = [
+        "chmod +x ~/join.sh",
+        "~/join.sh"
+    ]
+  }
 }
 
 resource "null_resource" "docker-swarm-worker-join" {
@@ -64,29 +64,15 @@ resource "null_resource" "docker-swarm-worker-join" {
     source      = "join_w.sh"
     destination = "/home/ubuntu/join.sh"
   }
-  provisioner "remote-exec" {
-  inline = [
-      "curl -fsSL https://get.docker.com | sh",
-      "sudo usermod -aG docker $USER",
-      "chmod +x ~/join.sh",
-      "~/join.sh"
+    provisioner "remote-exec" {
+      inline = [
+        "curl -fsSL https://get.docker.com | sh",
+        "sudo usermod -aG docker $USER",
+        "chmod +x ~/join.sh",
+        "~/join.sh"
     ]
   }
 }
-
-#resource "null_resource" "docker-swarm-manager-join" {
-#  count = var.workers
-#  depends_on = [yandex_compute_instance.vm-manager, null_resource.docker-swarm-manager-token]
-#  connection {
-#    user        = var.ssh_credentials.user
-#   private_key = file(var.ssh_credentials.private_key)
-#    host        = yandex_compute_instance.vm-manager[count.index].network_interface.0.nat_ip_address
-#  }
-#    provisioner "file" {
-#    source      = "join_m.sh"
-#    destination = "/tmp/join.sh"
-#  }
-#}
 
 resource "null_resource" "docker-swarm-manager-start" {
   depends_on = [yandex_compute_instance.vm-manager, null_resource.docker-swarm-manager-token]
@@ -95,12 +81,12 @@ resource "null_resource" "docker-swarm-manager-start" {
     private_key = file(var.ssh_credentials.private_key)
     host        = yandex_compute_instance.vm-manager[0].network_interface.0.nat_ip_address
   }
-  #provisioner "remote-exec" {
-  #  inline = [
-  #      "sudo docker stack deploy -c /tmp/docker-compose.yml SF_SHOP_"
-  #  ]
-  #}
-  #provisioner "local-exec" {
-  # command = "rm /tmp/join*"
-  #}
+  provisioner "remote-exec" {
+    inline = [
+        "sudo docker stack deploy -c /tmp/docker-compose.yml SF_SHOP_"
+    ]
+  }
+  provisioner "local-exec" {
+    command = "rm join*"
+  }
 }
