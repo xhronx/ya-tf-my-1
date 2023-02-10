@@ -7,4 +7,4 @@ rm -R .terraform*
 rm terraform.tfstate*
 rm join_*
 terraform init
-terraform apply -auto-approve
+#terraform apply -auto-approve
