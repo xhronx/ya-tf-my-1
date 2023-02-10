@@ -7,7 +7,7 @@ variable "managers" {
 variable "workers" {
   description = "Count of worker nodes"
   type        = number
-  default     = 3
+  default     = 2
 }
 
 variable "instance_family_image" {

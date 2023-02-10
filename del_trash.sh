@@ -2,6 +2,9 @@
 # Улалитьлишнее и ДКСТРОЙ!!!!
 
 
+terraform destroy -auto-approve
 rm -R .terraform*
 rm terraform.tfstate*
-#terraform destroy
+rm join_*
+terraform init
+terraform apply -auto-approve
